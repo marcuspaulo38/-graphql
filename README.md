@@ -1,4 +1,4 @@
-#graphql-examplo
+#graphql-exemplo
 
 $ npm install
 
