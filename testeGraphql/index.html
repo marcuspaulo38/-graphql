@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>testeGraphql - Marcus</title>
+    <script src="jquery-3.1.1.min.js"></script>
+</head>
+<body>
+    <textarea id="value" style="width:200px;height:200px">
+    {
+        prodcate(category: "A") {
+            id
+            name
+            
+        }
+    }
+    </textarea>
+    <button id="submit">Enviar</button>
+    <div id="result"></div>
+</body>
+<script type="text/javascript">
+    $('#submit').click(function () {
+        var value = $('#value').val().replace("\n", ' ', "g");
+        $.ajax({
+            url: 'http://localhost:3000/graphql',
+            method: 'POST',
+            dataType: 'JSON',
+            data: { query: value }
+        }).done(function (data) {
+            var str = '';
+            for (var key in data.data) {
+                str += key + '<br/>';
+                if (data.data[key].length) {
+                    for (var i = 0; i < data.data[key].length; i += 1) {
+                        for (var subKey in data.data[key][i]) {
+                            str += subKey + ': ' + data.data[key][i][subKey] + ', ';
+                        }
+                        str += '<br />';
+                    }
+                } else {
+                    for (var subKey in data.data[key]) {
+                        str += subKey + ': ' + data.data[key][subKey] + ', ';
+                    }
+                    str += '<br />';
+                }
+            }
+            $('#result').html(str);
+        });
+    });
+</script>
+</html>
